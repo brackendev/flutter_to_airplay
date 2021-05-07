@@ -22,7 +22,7 @@ class FlutterAVPlayer: NSObject, FlutterPlatformView {
         if let urlString = arguments["url"] {
             let item = AVPlayerItem(url: URL(string: urlString as! String)!)
             _flutterAVPlayerViewController.player = AVPlayer(playerItem: item)
-        } else if let fileName = arguments["file"] {
+        } else if let fileName = arguments["file"] as? String {
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             let documentsDirectory = paths[0]
             let downloadsDirectory = documentsDirectory.appendingPathComponent("Downloads")
