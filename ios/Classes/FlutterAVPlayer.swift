@@ -14,11 +14,16 @@ class FlutterAVPlayer: NSObject, FlutterPlatformView {
     private var _flutterAVPlayerViewController : AVPlayerViewController;
 
     init(frame:CGRect,
-          viewIdentifier: CLongLong,
-          arguments: Dictionary<String, Any>,
-          binaryMessenger: FlutterBinaryMessenger) {
+         viewIdentifier: CLongLong,
+         arguments: Dictionary<String, Any>,
+         binaryMessenger: FlutterBinaryMessenger) {
+        try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
         _flutterAVPlayerViewController = AVPlayerViewController()
         _flutterAVPlayerViewController.viewDidLoad()
+        _flutterAVPlayerViewController.allowsPictureInPicturePlayback = true
+        if #available(iOS 11.0, *) {
+            _flutterAVPlayerViewController.entersFullScreenWhenPlaybackBegins = true
+        }
         if let urlString = arguments["url"] {
             let item = AVPlayerItem(url: URL(string: urlString as! String)!)
             _flutterAVPlayerViewController.player = AVPlayer(playerItem: item)
