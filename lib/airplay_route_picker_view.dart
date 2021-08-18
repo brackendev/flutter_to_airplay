@@ -6,10 +6,12 @@ import 'package:flutter/services.dart';
 /// it can be added as a button or as an app bar icon, just like any widget.
 class AirPlayRoutePickerView extends StatelessWidget {
   const AirPlayRoutePickerView({
-    Key key,
+    Key? key,
     this.tintColor,
     this.activeTintColor,
     this.backgroundColor,
+    this.height = 44.0,
+    this.width = 44.0,
   }) : super(key: key);
 
   /// All of the attributes of this widget will effect the appearance of the
@@ -17,15 +19,23 @@ class AirPlayRoutePickerView extends StatelessWidget {
 
   /// Tint color can be provided as a Flutter color, it will update the
   /// tint color of the button in normal state.
-  final Color tintColor;
+  final Color? tintColor;
 
   /// Active Tint color can be provided as a flutter color, it will update
   /// the active tint color of the button when it is tapped.
-  final Color activeTintColor;
+  final Color? activeTintColor;
 
   /// Background color can be provided as a flutter color, it will update
   /// the background color of the button.
-  final Color backgroundColor;
+  final Color? backgroundColor;
+
+  /// Height of the container, that will just increase the tapable area of
+  /// this button. By default the value is 44.0, but user can change it.
+  final double height;
+
+  /// Width of the container, that will just increase the tapable area of
+  /// this button. By default the value is 44.0, but user can change it.
+  final double width;
 
   /// This function checks the presence of all the option attribute,
   /// and only packs the ones available. That helps the error handling
@@ -38,30 +48,30 @@ class AirPlayRoutePickerView extends StatelessWidget {
     // if tintColor is not provided, do not process this.
     if (tintColor != null) {
       var tint = {};
-      tint['red'] = tintColor.red;
-      tint['green'] = tintColor.green;
-      tint['blue'] = tintColor.blue;
-      tint['alpha'] = tintColor.opacity;
+      tint['red'] = tintColor!.red;
+      tint['green'] = tintColor!.green;
+      tint['blue'] = tintColor!.blue;
+      tint['alpha'] = tintColor!.opacity;
       creationParams['tintColor'] = tint;
     }
 
     // if activeTintColor is not provided, do not process this.
     if (activeTintColor != null) {
       var tint = {};
-      tint['red'] = activeTintColor.red;
-      tint['green'] = activeTintColor.green;
-      tint['blue'] = activeTintColor.blue;
-      tint['alpha'] = activeTintColor.alpha;
+      tint['red'] = activeTintColor!.red;
+      tint['green'] = activeTintColor!.green;
+      tint['blue'] = activeTintColor!.blue;
+      tint['alpha'] = activeTintColor!.alpha;
       creationParams['activeTintColor'] = tint;
     }
 
     // if backgroundColor is not provided, do not process this.
     if (backgroundColor != null) {
       var tint = {};
-      tint['red'] = backgroundColor.red;
-      tint['green'] = backgroundColor.green;
-      tint['blue'] = backgroundColor.blue;
-      tint['alpha'] = backgroundColor.alpha;
+      tint['red'] = backgroundColor!.red;
+      tint['green'] = backgroundColor!.green;
+      tint['blue'] = backgroundColor!.blue;
+      tint['alpha'] = backgroundColor!.alpha;
       creationParams['backgroundColor'] = tint;
     }
 
@@ -76,13 +86,17 @@ class AirPlayRoutePickerView extends StatelessWidget {
   Widget build(BuildContext context) {
     // This widget supports only iOS for now, so here we are checking this explicitly.
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return UiKitView(
-        viewType:
-            'airplay_route_picker_view', // This is the identifier that helps distinguish different views in the native code.
-        creationParamsCodec:
-            StandardMessageCodec(), // messenger to decode message between flutter and native.
-        creationParams:
-            getCreateParams(), // parameters to load the video in native code.
+      return Container(
+        width: width,
+        height: height,
+        child: UiKitView(
+          viewType:
+              'airplay_route_picker_view', // This is the identifier that helps distinguish different views in the native code.
+          creationParamsCodec:
+              StandardMessageCodec(), // messenger to decode message between flutter and native.
+          creationParams:
+              getCreateParams(), // parameters to load the video in native code.
+        ),
       );
     } else {
       // if the platform is not iOS, it should return a centered text widget to give the message.
